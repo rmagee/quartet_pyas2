@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% block title %}
+Home
+{% endblock %}
+{% block content %}
+<table id="about" align="center">
+    <tr>
+        <td>
+        <h1>{% trans 'QU4RTET AS2 Gateway Global Setting' %}</h1>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>{% trans 'Current user' %}</td><td>{{ user.username }}</td>
+    </tr>
+    <tr>
+        <td>{% trans 'Last login' %}</td><td>{{ user.last_login|date:"Y-m-d G:i" }}</td>
+    </tr>
+    <tr>
+        <td>Environment</td><td>{{ pyas2info.environment }}</td>
+    </tr>
+    <tr>
+        <td>Port</td><td>{{ pyas2info.port }}</td>
+    </tr>
+    <tr>
+        <td>ASYNC MDN Receive URL</td><td>{{ pyas2info.mdn_url }}</td>
+    </tr>
+    <tr>
+        <td>ASYNC MDN Max Wait Mins</td><td>{{ pyas2info.async_mdn_wait }}</td>
+    </tr>
+    <tr>
+        <td>Max Retries</td><td>{{ pyas2info.max_retries }}</td>
+    </tr>
+    <tr>
+        <td>Log Level</td><td>{{ pyas2info.log_level }}</td>
+    </tr>
+    <tr>
+        <td>Log Console</td><td>{{ pyas2info.log_console }}</td>
+    </tr>
+    <tr>
+        <td>Log Console Level</td><td>{{ pyas2info.log_console_level }}</td>
+    </tr>
+    <tr>
+        <td>Max Archive Days</td><td>{{ pyas2info.max_arch_days }}</td>
+    </tr>
+</table>
+{% endblock %}
+
