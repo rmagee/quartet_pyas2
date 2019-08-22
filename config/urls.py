@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from as2.views import FromQuartetFileView
 from rest_framework_swagger.views import get_swagger_view
-import debug_toolbar
+#import debug_toolbar
 schema_view = get_swagger_view(title='QU4RTET AS2 Gateway')
 
 urlpatterns = [
@@ -25,5 +25,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^pyas2/', include('pyas2.urls') ),
     url(r'^upload/$', FromQuartetFileView.as_view(), name='file-upload'),
-    url(r'^__debug__/', include(debug_toolbar.urls)),
+    #url(r'^__debug__/', include(debug_toolbar.urls)),
 ]
