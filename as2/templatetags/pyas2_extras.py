@@ -1,5 +1,5 @@
 from django import template
-from pyas2 import pyas2init
+from as2 import pyas2init
 
 register = template.Library()
 

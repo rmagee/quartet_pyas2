@@ -8,10 +8,10 @@ from django.utils.translation import ugettext as _
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-from pyas2 import models
-from pyas2 import as2lib
-from pyas2 import as2utils
-from pyas2 import pyas2init
+from as2 import models
+from as2 import as2lib
+from as2 import as2utils
+from as2 import pyas2init
 
 from as2.models import Routes, MessageReceived
 
@@ -89,7 +89,7 @@ class RouteFiles():
             as2utils.senderrorreport(message, _(u'Failed to send message, error is %s' % e))
 
     """
-    Receives a message from pyas2 and forwards the message to a QUARTET Server.
+    Receives a message from as2 and forwards the message to a QUARTET Server.
     The QU4RTET Server must be configured in the Routes. 
     """
 
@@ -130,6 +130,8 @@ class RouteFiles():
 
 @receiver(post_save, sender=models.Message)
 def handle_payload(sender, instance, created, **kwargs):
+    # Don't route Outbound Messages
+    if instance and instance.direction == 'OUT': return
     # If this is a create, then return - the payload hasn't been updated
     if created: return
     # if the payload is none, then return - the recieve() method will fail

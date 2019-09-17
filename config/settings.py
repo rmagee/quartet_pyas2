@@ -17,6 +17,7 @@ import os
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
 PROJ_PATH = os.path.abspath(os.path.join(__file__ ,"../../as2"))
 TEMPLATE_DIR = os.path.join(PROJ_PATH, "templates")
+CERTDIR = os.path.join(BASE_DIR, "config/certificates")
 STATIC_PATH = os.path.join(PROJ_PATH,'static')
 
 print("Base = {0}".format(BASE_DIR))
@@ -43,7 +44,6 @@ INTERNAL_IPS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'pyas2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,7 +71,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR],
+        'DIRS': [TEMPLATE_DIR, os.path.join(TEMPLATE_DIR, "as2"), os.path.join(TEMPLATE_DIR, "admin")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
