@@ -112,15 +112,22 @@ class RouteFiles():
         route = Routes.objects.get(partner__as2_name=message.partner.as2_name)
         print("Send to {0}".format(route.url))
 
+
         try:
             file_name = os.path.basename(file)
             files = {'file': (file_name, open(file, 'rb'))}
             resp = requests.post(route.url, auth=(route.username, route.password), files=files)
+            models.Log.objects.create(message=message,
+                                      status='S',
+                                      text=_(u'Message has been routed to {0}'.format(route.url)))
             print(resp.content)
             # Mark the message as processed
             MessageReceived.objects.create(message_id=message.message_id, processed=True)
         except Exception as e:
-            raise e
+            models.Log.objects.create(message=message,
+                                      status='S',
+                                      text=_(u'Message failed to route to routed to {0}. {1}'.format(route.url), e ))
+
 
 
 """
