@@ -318,6 +318,7 @@ def decompress_payload(payload):
 
 
 def encrypt_payload(payload, key, cipher):
+
     encrypter = SMIME.SMIME()
     certificate = X509.X509_Stack()
     certificate.push(X509.load_cert(key))

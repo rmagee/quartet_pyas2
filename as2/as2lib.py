@@ -392,6 +392,7 @@ def build_message(message):
                                   text=_(u'Encrypting the message using partner key {0:s}'.format(
                                       message.partner.encryption_key)))
         message.encrypted = True
+        pyas2init.logger.debug('Partner Cert Path:\n%s' % message.partner.encryption_key.certificate.path)
         payload = as2utils.encrypt_payload(as2utils.canonicalize(as2utils.mimetostring(payload, 0)),
                                            message.partner.encryption_key.certificate.path,
                                            message.partner.encryption)
