@@ -49,7 +49,7 @@ def txtexc(mention_exception_type=True):
     if pyas2init.gsettings['log_level'] == 'DEBUG':
         return safe_unicode(traceback.format_exc(limit=None))
     else:
-        terug = safe_unicode(traceback.format_exc(limit=0))
+        terug = safe_unicode(traceback.format_exc(limit=None))
         terug = terug.replace(u'Traceback (most recent call last):\n', u'')
         if not mention_exception_type:
             terug = terug.partition(': ')[2]
