@@ -1,7 +1,7 @@
-"""as2 URL Configuration
+"""pyas2_dev URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.11/topics/http/urls/
+    https://docs.djangoproject.com/en/1.9/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -15,17 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from views import FromQuartetFileView
-from rest_framework_swagger.views import get_swagger_view
-
-schema_view = get_swagger_view(title='QU4RTET AS2 Gateway')
-
-
-
 
 urlpatterns = [
-    url(r'^$', schema_view),
     url(r'^admin/', admin.site.urls),
-    url(r'^pyas2/', include('pyas2.urls')),
-    url(r'^upload/$', FromQuartetFileView.as_view(), name='file-upload'),
+    url(r'^pyas2/', include('as2.urls')),
 ]
