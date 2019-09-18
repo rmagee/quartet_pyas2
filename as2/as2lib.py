@@ -363,6 +363,13 @@ def build_message(message):
                                   status='S',
                                   text=_(u'Signing the message using organization key {0:s}'.format(
                                       message.organization.signature_key)))
+
+        models.Log.objects.create(message=message,
+                                  status='S',
+                                  text=_(u'Organization key path is {0:s}'.format(
+                                      message.organization.signature_key.certificate.path)))
+
+
         message.signed = True
         signed_message = MIMEMultipart('signed', protocol="application/pkcs7-signature")
         del signed_message['MIME-Version']

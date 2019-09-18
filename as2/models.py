@@ -136,7 +136,7 @@ class Partner(models.Model):
         max_length=500, upload_to=get_certificate_path,
         verbose_name=_('HTTPS Local CA Store'), null=True, blank=True)
     target_url = models.URLField()
-    subject = models.CharField(max_length=255, default=_('EDI Message sent using pyas2'))
+    subject = models.CharField(max_length=255, default=_('EDI Message sent using AS2'))
     content_type = models.CharField(max_length=100, choices=CONTENT_TYPE_CHOICES, default='application/edi-consent')
     compress = models.BooleanField(verbose_name=_('Compress Message'), default=True)
     encryption = models.CharField(max_length=20, verbose_name=_('Encrypt Message'), choices=ENCRYPT_ALG_CHOICES,
