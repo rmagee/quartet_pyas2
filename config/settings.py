@@ -32,7 +32,7 @@ print("Static = {0}".format(STATIC_PATH))
 SECRET_KEY = '4#=gywk+dt%klcfu#16eo*r!g2e$s4sqd8e_9jmw&vvs0*xf5w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*', 'localhost', '0.0.0.0', 'as2.qu4rtet.io']
 INTERNAL_IPS = [
