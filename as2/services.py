@@ -29,20 +29,20 @@ class RouteFiles():
 
         # get the incoming data
         organization = data["sender"];
-        partner = data["receiver"];
+        as2Id = data["receiver"];
         payload = data["file"];
 
 
         try:
             # Get the Orginzation, this is the Source of the message
-            org = models.Organization.objects.get(name=organization)
+            org = models.Organization.objects.get(as2_name=organization)
         except models.Organization.DoesNotExist:
             raise Exception(_(u'Organization "%s" does not exist' % organization))
         try:
             # Get the Partner, this is the destination of the message
-            partner = models.Partner.objects.get(name=partner)
+            partner = models.Partner.objects.get(as2_name=as2Id)
         except models.Partner.DoesNotExist:
-            raise Exception(_(u'Partner "%s" does not exist' % partner))
+            raise Exception(_(u'Partner AS2 ID "%s" does not exist' % as2Id))
 
         # Check if payload (file on the system to be sent to a partner) exists and we have the right permissions
         if not os.path.isfile(payload):
@@ -126,7 +126,7 @@ class RouteFiles():
         except Exception as e:
             models.Log.objects.create(message=message,
                                       status='S',
-                                      text=_(u'Message failed to route to routed to {0}. {1}'.format(route.url), e ))
+                                      text=_(u'Message failed to route to {0}. {1}'.format(route.url, str(e) )))
 
 
 

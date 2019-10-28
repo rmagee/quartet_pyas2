@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import InboundFiles
+from .models import QuartetFileUpload
 
 
-class InboundFileSerializer(serializers.ModelSerializer):
+class QuartetFileUploadSerializer(serializers.ModelSerializer):
 
 
     class Meta():
-        model = InboundFiles
-        fields = ('file', 'sender', 'receiver', 'uploaded_at')
+        model = QuartetFileUpload
+        fields = ('file', 'organization', 'partner', 'uploaded_at')

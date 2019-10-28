@@ -3,10 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, Http404
 from django.shortcuts import render, redirect, get_object_or_404
-from .serializers import InboundFileSerializer
-from .services import RouteFiles
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import View
 from django.core.urlresolvers import reverse
@@ -21,6 +21,8 @@ from as2 import as2lib
 from as2 import as2utils
 from as2 import pyas2init
 from as2 import viewlib
+from as2 import services
+
 import subprocess
 import tempfile
 import traceback
@@ -594,16 +596,22 @@ def as2receive(request, *args, **kwargs):
 
 
 #
-# This View is for Clients s
+# This View allows QU4RTET to post to AS2
 #
-class FromQuartetFileView(APIView):
-    parser_classes = (MultiPartParser, FormParser)
 
-    def post(self, request, *args, **kwargs):
-        file_serializer = InboundFileSerializer(data=request.data)
-        if file_serializer.is_valid():
-            file_serializer.save()
-            RouteFiles.send(file_serializer.data)
-            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@csrf_exempt
+def as2send(request, *args, **kwargs):
+    org_as2_id = str(request.GET['organization'])
+    partner_as2_id = str(request.GET['partner'])
+    doc = models.QuartetFileUpload(organization=org_as2_id,
+                                   partner=partner_as2_id,
+                                   file=request.FILES['file'])
+    doc.save()
+    data = {
+        "sender": doc.organization,
+        "receiver":doc.partner,
+         "file": str(doc.file.path)
+
+    }
+    services.RouteFiles.send(data)
+    return Response(data, status=status.HTTP_201_CREATED)

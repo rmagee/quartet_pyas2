@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from as2 import views
 from rest_framework_swagger.views import get_swagger_view
+from django.views.decorators.csrf import csrf_exempt
 import debug_toolbar
 
 staff_required = user_passes_test(lambda u: u.is_staff)
@@ -54,8 +55,9 @@ urlpatterns = [
     # as2 asynchronous mdn and message receive url
     url(r'^as2/receive$', views.as2receive, name="as2-receive"),
     url(r'^pyas2/as2receive$', views.as2receive, name="pyas2-receive"),
+    url(r'^as2/send$', views.as2send, name='file-upload'),
     # catch-all
     url(r'^.*', login_required(views.home, login_url='login'), name='home'),
-    url(r'^upload/$', views.FromQuartetFileView.as_view(), name='file-upload'),
+
     url(r'^__debug__/', include(debug_toolbar.urls)),
 ]

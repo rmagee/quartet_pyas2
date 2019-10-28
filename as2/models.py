@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext as _
 from django.db import models
-from django.core.files.storage import FileSystemStorage
 from django.utils.translation import ugettext as _
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -9,17 +8,15 @@ from as2 import pyas2init
 from as2 import as2utils
 import os
 
-class InboundFiles(models.Model):
+class QuartetFileUpload(models.Model):
     file = models.FileField(blank=False, null=False, upload_to='uploads/')
-    sender = models.CharField(max_length=255, null=True)
-    receiver = models.CharField(max_length=255, null=True)
+    organization = models.CharField(max_length=255, null=True)
+    partner = models.CharField(max_length=255, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     processed = models.BooleanField(default=False)
 
     class Meta:
         app_label = 'as2'
-
-
 
 
 class MessageReceived(models.Model):
@@ -222,8 +219,8 @@ class Message(models.Model):
         app_label = 'as2'
 
 class Payload(models.Model):
-    name = models.CharField(max_length=100)
-    content_type = models.CharField(max_length=255)
+    name = models.CharField(max_length=500)
+    content_type = models.CharField(max_length=500)
     file = models.CharField(max_length=500)
 
     def __str__(self):
@@ -241,7 +238,7 @@ class Log(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES)
     message = models.ForeignKey(Message, related_name='logs')
-    text = models.CharField(max_length=255)
+    text = models.CharField(max_length=500)
 
     class Meta:
         app_label = 'as2'
@@ -327,3 +324,5 @@ def update_dirs():
         for partner in partners:
             as2utils.dirshouldbethere(
                 as2utils.join(pyas2init.gsettings['root_dir'], 'messages', partner.as2_name, 'outbox', org.as2_name))
+
+
