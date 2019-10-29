@@ -18,17 +18,15 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from as2 import views
-from rest_framework_swagger.views import get_swagger_view
-from django.views.decorators.csrf import csrf_exempt
+
 import debug_toolbar
 
 staff_required = user_passes_test(lambda u: u.is_staff)
 superuser_required = user_passes_test(lambda u: u.is_superuser)
 
-schema_view = get_swagger_view(title='QU4RTET AS2 Gateway')
+
 
 urlpatterns = [
-    url(r'^schema/$', schema_view),
     url(r'^$', login_required(views.home, login_url='login'), name='home'),
     url(r'^admin/', admin.site.urls),
     url(r'^login.*', auth_views.login, {'template_name': 'admin/login.html'}, name='login'),
