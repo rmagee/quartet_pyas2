@@ -1,10 +1,4 @@
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.views import APIView
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
@@ -614,4 +608,4 @@ def as2send(request, *args, **kwargs):
 
     }
     services.RouteFiles.send(data)
-    return HttpResponse(_(u'AS2 message has been sent'))
+    return HttpResponse(_(u'AS2 message has been sent from QU4RTET.'))
