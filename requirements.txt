@@ -21,7 +21,7 @@ m2crypto==0.35.2          # via pyas2
 markupsafe==1.1.1         # via jinja2
 openapi-codec==1.3.2      # via django-rest-swagger
 pip-tools==3.8.0
-psycopg2==2.6
+psycopg2-binary
 pyasn1==0.4.5             # via pyas2
 pytz==2019.1
 requests==2.22.0

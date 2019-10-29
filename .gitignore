@@ -7,3 +7,5 @@ certificates/
 logging/
 uploads/
 *.pyc
+docker-compose.yml
+Dockerfile

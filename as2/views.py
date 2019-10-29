@@ -614,4 +614,4 @@ def as2send(request, *args, **kwargs):
 
     }
     services.RouteFiles.send(data)
-    return Response(data, status=status.HTTP_201_CREATED)
+    return HttpResponse(_(u'AS2 message has been sent'))
