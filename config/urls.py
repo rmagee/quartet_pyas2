@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from as2 import views
 
-import debug_toolbar
+#import debug_toolbar
 
 staff_required = user_passes_test(lambda u: u.is_staff)
 superuser_required = user_passes_test(lambda u: u.is_superuser)
@@ -57,5 +57,5 @@ urlpatterns = [
     # catch-all
     url(r'^.*', login_required(views.home, login_url='login'), name='home'),
 
-    url(r'^__debug__/', include(debug_toolbar.urls)),
+    #url(r'^__debug__/', include(debug_toolbar.urls)),
 ]
