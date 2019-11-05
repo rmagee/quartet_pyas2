@@ -1,3 +1,5 @@
+import os
+import uuid
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -9,6 +11,7 @@ from django.contrib import messages
 from django.core.mail import mail_managers
 from django import template
 from email.parser import HeaderParser
+from config.settings import BASE_DIR
 from as2 import models
 from as2 import forms
 from as2 import as2lib
@@ -592,20 +595,81 @@ def as2receive(request, *args, **kwargs):
 #
 # This View allows QU4RTET to post to AS2
 #
-
 @csrf_exempt
 def as2send(request, *args, **kwargs):
+
+    pyas2init.logger.info("Received msg in as2Send")
     org_as2_id = str(request.GET['organization'])
     partner_as2_id = str(request.GET['partner'])
-    doc = models.QuartetFileUpload(organization=org_as2_id,
-                                   partner=partner_as2_id,
-                                   file=request.FILES['file'])
-    doc.save()
-    data = {
-        "sender": doc.organization,
-        "receiver":doc.partner,
-         "file": str(doc.file.path)
 
-    }
-    services.RouteFiles.send(data)
-    return HttpResponse(_(u'AS2 message has been sent from QU4RTET.'))
+    if len(org_as2_id) == 0 or len(partner_as2_id) == 0:
+        msg = _('Request is missing the organization, partner, or both query parameters.')
+        pyas2init.logger.error(msg)
+        return HttpResponseServerError(msg)
+
+
+    if len(request.FILES) == 0 and len(request.body) == 0:
+       msg = _('Request did not contain data for the AS2 Gateway to process.')
+       pyas2init.logger.error(msg)
+       return HttpResponseServerError(msg)
+
+    try:
+        file = None
+        if len(request.FILES) > 1:
+            return HttpResponseServerError(_('The AS2 Gateway as2Send operation will only process one file per request.'))
+
+        if len(request.FILES) > 0:
+            pyas2init.logger.info(_('Request contained a file'))
+            file = request.FILES['file']
+        else:
+            pyas2init.logger.info(_('Request contained raw data'))
+            data = request.body
+            file = create_file(data)
+
+
+    except Exception:
+        txt = traceback.format_exc(None).decode('utf-8', 'ignore')
+        msg = _(u'Fatal error while processing message from QU4RTET, '
+                       u'error:\n(txt)%s') % {'txt': txt}
+        pyas2init.logger.error(msg)
+        return HttpResponseServerError(msg)
+
+
+    try:
+        doc = models.QuartetFileUpload(organization=org_as2_id,
+                                       partner=partner_as2_id,
+                                       file=file)
+        doc.save()
+
+        data = {
+            "sender": doc.organization,
+            "receiver":doc.partner,
+             "file": str(doc.file.path)
+
+        }
+        services.RouteFiles.send(data)
+        return HttpResponse(_(u'AS2 received a message in as2Send and the message has been processed.'), content_type="text/plain", status=200)
+
+    except Exception:
+        txt = traceback.format_exc(None).decode('utf-8', 'ignore')
+        msg = _(u'Fatal error while processing message from QU4RTET, '
+                u'error:\n(txt)%s') % {'txt': txt}
+        pyas2init.logger.error(msg)
+        return HttpResponseServerError(msg)
+
+
+def create_file(data):
+    path = os.path.join(BASE_DIR,"config/quartet")
+    if not os.path.exists(path):
+       os.mkdir(path, 0755)
+
+    file_name = "{0}.xml".format(str(uuid.uuid4()))
+    full_path = os.path.join(path, file_name)
+
+    f = open(full_path, "w")
+    f.write(data)
+    f.close()
+
+    # return the full path to the file
+    return full_path
+
