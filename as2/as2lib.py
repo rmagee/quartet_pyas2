@@ -321,7 +321,7 @@ def build_message(message):
                               status='S',
                               text=_(u'Build the AS2 message and header to send to the partner'))
     email_datetime = email.Utils.formatdate(localtime=True)
-    as2_to_name = message.partner.as2_to_name is not None if message.partner.as2_to_name else message.partner.as2_name
+    as2_to_name = message.partner.as2_to_name if message.partner.as2_to_name is not None else message.partner.as2_name
     as2_header = {
         'AS2-Version': '1.2',
         'ediint-features': 'CEM',
