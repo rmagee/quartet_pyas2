@@ -39,10 +39,15 @@ class RouteFiles():
         except models.Organization.DoesNotExist:
             raise Exception(_(u'Organization "%s" does not exist' % organization))
         try:
-            # Get the Partner, this is the destination of the message
+            # Get the Partner by AS2 ID, this is the destination of the message
             partner = models.Partner.objects.get(as2_name=as2Id)
         except models.Partner.DoesNotExist:
-            raise Exception(_(u'Partner AS2 ID "%s" does not exist' % as2Id))
+            try:
+                # If the partner was not found by AS2 ID, get partner by name
+                partner = models.Partner.objects.get(name=as2Id)
+            except models.Partner.DoesNotExist:
+                # if the partner wasn't found by AS2 ID or Partner Name, raise exception
+                raise Exception(_(u'Partner AS2 ID or Partner Name "%s" does not exist' % as2Id))
 
         # Check if payload (file on the system to be sent to a partner) exists and we have the right permissions
         if not os.path.isfile(payload):

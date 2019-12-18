@@ -125,6 +125,7 @@ class Partner(models.Model):
     )
     name = models.CharField(verbose_name=_('Partner Name'), max_length=100)
     as2_name = models.CharField(verbose_name=_('AS2 Identifier'), max_length=100, primary_key=True)
+    as2_to_name = models.CharField(verbose_name=_('AS2 To Identifier'), max_length=100, null=True)
     email_address = models.EmailField(null=True, blank=True)
     http_auth = models.BooleanField(verbose_name=_('Enable Authentication'), default=False)
     http_auth_user = models.CharField(max_length=100, null=True, blank=True)

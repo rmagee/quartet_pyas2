@@ -321,13 +321,14 @@ def build_message(message):
                               status='S',
                               text=_(u'Build the AS2 message and header to send to the partner'))
     email_datetime = email.Utils.formatdate(localtime=True)
+    as2_to_name = message.partner.as2_to_name is not None if message.partner.as2_to_name else message.partner.as2_name
     as2_header = {
         'AS2-Version': '1.2',
         'ediint-features': 'CEM',
         'MIME-Version': '1.0',
         'Message-ID': '<%s>' % message.message_id,
         'AS2-From': as2utils.escape_as2name(message.organization.as2_name),
-        'AS2-To': as2utils.escape_as2name(message.partner.as2_name),
+        'AS2-To': as2utils.escape_as2name(as2_to_name),
         'Subject': message.partner.subject,
         'Date': email_datetime,
         'recipient-address': message.partner.target_url,
