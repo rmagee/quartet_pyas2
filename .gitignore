@@ -1,5 +1,4 @@
 __pycache__/
-docs/
 db.sqlite3
 .idea/
 messages/
@@ -7,3 +6,5 @@ certificates/
 logging/
 uploads/
 *.pyc
+docker-compose.yml
+Dockerfile

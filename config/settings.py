@@ -32,7 +32,7 @@ print("Static = {0}".format(STATIC_PATH))
 SECRET_KEY = '4#=gywk+dt%klcfu#16eo*r!g2e$s4sqd8e_9jmw&vvs0*xf5w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*', 'localhost', '0.0.0.0', 'as2.qu4rtet.io']
 INTERNAL_IPS = [
@@ -50,9 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework_swagger',
     'as2',
-    #'debug_toolbar',
+
 ]
 
 MIDDLEWARE = [
@@ -63,7 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'debug_toolbar.middleware.DebugToolbarMiddleware'
+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -93,7 +92,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'as2',
+        'NAME': 'quartet_as2',
         'USER': 'quartet' ,
         'PASSWORD': 'quartet',
         'HOST': 'localhost',
@@ -140,6 +139,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = STATIC_PATH
+
+#MEDIA_URL = '/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 PYAS = {
 

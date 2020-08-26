@@ -1,25 +1,17 @@
-from .services import RouteFiles
+from django.utils.deprecation import MiddlewareMixin
 
-class QuartetAS2Middleware(object):
-    def __init__(self, get_response):
-        self.get_response = get_response
-        # One-time configuration and initialization.
+class QuartetAS2Middleware(MiddlewareMixin):
 
-    def __call__(self, request):
-        # Code to be executed for each request before
-        # the view (and later middleware) are called.
 
-        if request.META["PATH_INFO"]=='/pyas2/as2receive':
-           data = {
-               'organization':request.META["HTTP_AS2_FROM"],
-               'partner': request.META["HTTP_AS2_TO"],
-               'message_id': request.META["HTTP_MESSAGE_ID"]
-           }
+    def process_request(self, req):
+        attr = '_dont_enforce_csrf_checks'
+        if not getattr(req, attr, False):
+            setattr(req, attr, True)
 
-        response = self.get_response(request)
 
-        # Code to be executed for each request/response after
-        # the view is called.
 
-        return response
+
+
+
+
 

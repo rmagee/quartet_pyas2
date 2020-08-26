@@ -18,16 +18,13 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from as2 import views
-from rest_framework_swagger.views import get_swagger_view
-import debug_toolbar
 
 staff_required = user_passes_test(lambda u: u.is_staff)
 superuser_required = user_passes_test(lambda u: u.is_superuser)
 
-schema_view = get_swagger_view(title='QU4RTET AS2 Gateway')
+
 
 urlpatterns = [
-    url(r'^schema/$', schema_view),
     url(r'^$', login_required(views.home, login_url='login'), name='home'),
     url(r'^admin/', admin.site.urls),
     url(r'^login.*', auth_views.login, {'template_name': 'admin/login.html'}, name='login'),
@@ -54,8 +51,7 @@ urlpatterns = [
     # as2 asynchronous mdn and message receive url
     url(r'^as2/receive$', views.as2receive, name="as2-receive"),
     url(r'^pyas2/as2receive$', views.as2receive, name="pyas2-receive"),
+    url(r'^as2/send$', views.as2send, name='file-upload'),
     # catch-all
     url(r'^.*', login_required(views.home, login_url='login'), name='home'),
-    url(r'^upload/$', views.FromQuartetFileView.as_view(), name='file-upload'),
-    url(r'^__debug__/', include(debug_toolbar.urls)),
 ]

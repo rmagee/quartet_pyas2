@@ -1,0 +1,48 @@
+server {
+    # **********************
+    # CHANGE THE SERVER NAME
+    # **********************
+    server_name exela-as2.qu4rtet.io;
+    client_max_body_size 10M;
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static {
+        alias /home/ubuntu/quartet_pyas2/as2/static;
+    }
+    location /media/ {
+        root /tmp;
+    }
+    location / {
+        include proxy_params;
+
+        proxy_pass http://unix:/home/ubuntu/quartet_pyas2/as2/quartet.sock;
+    }
+
+
+
+    listen 80; # managed by Certbot
+    #ssl_certificate /etc/letsencrypt/live/exela-as2.qu4rtet.io/fullchain.pem; # managed by Certbot
+    #ssl_certificate_key /etc/letsencrypt/live/exela-as2.qu4rtet.io/privkey.pem; # managed by Certbot
+    #include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+}
+server {
+    listen 127.0.0.1:80;
+    server_name localhost;
+    client_max_body_size 10M;
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static {
+        alias /home/ubuntu/quartet_pyas2/as2/static;
+    }
+    location /media/ {
+        root /tmp;
+    }
+    location / {
+        include proxy_params;
+        #proxy_set_header X-Forwarded-Protocol $scheme;
+
+        proxy_pass http://unix:/home/ubuntu/quartet_pyas2/as2/qu4rtet.sock;
+    }
+}
