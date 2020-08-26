@@ -1,0 +1,13 @@
+stages:
+    - build-docs
+
+pages:
+    image: seriallab/python3.5dev
+    stage: build-docs
+    script:
+    - pip install mkdocs
+    - mkdocs build -d ./public
+    artifacts:
+        paths:
+        - public
+        expire_in: 1 hour
