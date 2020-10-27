@@ -1,7 +1,7 @@
 bumpversion==0.5.3
 pip==19.1.1
 pip-tools==3.8.0
-psycopg2==2.6
+psycopg2==2.7
 pytz==2019.1
 requests==2.22.0
 wheel==0.33.4

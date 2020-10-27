@@ -32,7 +32,7 @@ the AS2 Message to QU4RTET's REST API using Secured Sockets Layer (SSL).
 Sending Messages
 ~~~~~~~~~~~~~~~~
 QU4RTET sends AS2 messages by sending the message, e.g. an EPCIS Document, along with ``Sender`` and ``Receiver`` information, to the QU4RTET
-AS2 Gateway endpoint: ``https://as2.qu4rtet.io/upload``. The Gateway looks at the ``Sender`` and ``Receiver`` information and forwards the
+AS2 Gateway endpoint: ``https://as2.qu4rtet.io/send``. The Gateway looks at the ``Sender`` and ``Receiver`` information and forwards the
 AS2 Message to the correct endpoint managed by the Partner.
 
 
